@@ -48,5 +48,13 @@ Follow these steps to set up the project locally.
 
 
 ---
-**Developer:** [Your Name]
-**Department:** Computer Engineering, KTU
+**Developer:** Avaz Gurbanlı
+**Department:** Software Engineering, KTU
+
+
+
+<img width="1834" height="924" alt="Screenshot from 2025-12-15 17-37-18" src="https://github.com/user-attachments/assets/9cb6d479-87ac-4104-aa48-38621eaf2351" />
+
+<img width="1834" height="924" alt="Screenshot from 2025-12-15 17-37-29" src="https://github.com/user-attachments/assets/bf38f8bc-4372-4d9f-b32c-8a0ca92412fd" />
+
+<img width="1834" height="947" alt="Screenshot from 2025-12-15 17-38-29" src="https://github.com/user-attachments/assets/041c5f32-116d-4051-ba61-31273f61dcaa" />
