@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KTU Library | Users</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>👥 User Management</h1>
+        <div class="top-bar" style="justify-content: center; gap: 20px;">
+            <a href="index.html" class="btn-secondary" style="text-decoration: none;">⬅ Back to Library</a>
+            <button class="btn-secondary" onclick="logout()">Logout 🚪</button>
+        </div>
+    </header>
+
+    <div class="card admin-border">
+        <h2>➕ Add New User</h2>
+        <div class="add-book-form" style="grid-template-columns: 1fr 1fr 1fr auto;">
+            <input type="text" id="newUserName" placeholder="Full Name">
+            <input type="email" id="newUserEmail" placeholder="Email">
+            <input type="text" id="newUserPass" placeholder="Password">
+            <select id="newUserRole" style="padding: 10px; border-radius: 8px; border: 2px solid #dfe6e9;">
+                <option value="STUDENT">Student</option>
+                <option value="ADMIN">Admin</option>
+            </select>
+            <button class="btn-primary" onclick="registerUser()">Create</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>User List</h2>
+            <button class="btn-small" onclick="loadUsers()">↻ Refresh</button>
+        </div>
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Books</th>
+                <th>Debt</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="usersTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    // On page load, check admin rights and load the table
+    window.onload = function() {
+        checkAuth(); // Check from script.js
+        loadUsers(); // Load table
+    };
+</script>
+</body>
+</html>

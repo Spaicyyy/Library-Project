@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTU Library | Smart System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>📚 KTU Library <span class="subtitle">Smart System</span></h1>
+    </header>
+
+    <div id="loginSection" class="card login-card">
+        <h2>🔐 System Login</h2>
+        <p class="hint">Please enter your credentials</p>
+        <div class="form-group">
+            <input type="email" id="emailInput" placeholder="Email" autocomplete="off">
+            <input type="password" id="passwordInput" placeholder="Password" autocomplete="new-password">
+            <button class="btn-primary" onclick="handleLogin()">Login ➜</button>
+        </div>
+        <p id="loginError" class="error-msg hidden">❌ Invalid email or password!</p>
+    </div>
+
+    <div id="dashboardSection" class="hidden">
+        <div class="top-bar">
+            <span id="welcomeMsg">Welcome, User!</span>
+            <button class="btn-secondary" onclick="logout()">Logout 🚪</button>
+        </div>
+
+        <div id="adminPanel" class="card admin-border hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>🛠️ Admin Panel</h2>
+                <a href="users.html" class="btn-primary" style="text-decoration: none; background: var(--dark); padding: 10px 20px;">
+                    👥 Manage Users ➜
+                </a>
+            </div>
+
+            <div class="add-book-form" style="margin-top: 15px;">
+                <input type="text" id="newBookTitle" placeholder="Book Title">
+                <input type="text" id="newBookAuthor" placeholder="Author Name">
+                <input type="text" id="newBookIsbn" placeholder="ISBN (Code)">
+                <button class="btn-accent" onclick="addNewBook()">+ Add Book</button>
+            </div>
+        </div>
+
+        <div id="studentPanel" class="card student-border hidden">
+            <h2>🎒 My Books</h2>
+            <ul id="myBorrowsList" class="borrow-list"></ul>
+        </div>
+
+        <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 10px;">
+                <h2>📖 Library Catalog</h2>
+                <div style="flex-grow: 1; display: flex; justify-content: flex-end; gap: 10px;">
+                    <input type="text" id="searchInput" placeholder="🔍 Search book by title or ISBN..."
+                           style="margin: 0; max-width: 300px; padding: 10px;" onkeyup="filterBooks()">
+                    <button class="btn-small" onclick="loadBooks()">↻ Refresh</button>
+                </div>
+            </div>
+
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody id="booksTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
