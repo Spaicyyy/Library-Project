@@ -23,7 +23,7 @@ public class AuthController {
     @PostMapping("/login")
     public User login(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
-        String password = loginData.get("password"); // Это "12345"
+        String password = loginData.get("password"); // is "12345"
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));

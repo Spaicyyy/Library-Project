@@ -57,7 +57,7 @@ public class UserController {
     @PostMapping
     public User addUser(@RequestBody User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Email уже занят!");
+            throw new RuntimeException("Email already taken!");
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);

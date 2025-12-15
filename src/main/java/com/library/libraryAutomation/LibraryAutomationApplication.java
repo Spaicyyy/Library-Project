@@ -17,8 +17,8 @@ public class LibraryAutomationApplication {
 		SpringApplication.run(LibraryAutomationApplication.class, args);
 	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Bean //Autowired kullanmak icin yazilir
+    public PasswordEncoder passwordEncoder() { //PasswordEncoder , sonra heshing algoritmasini degismek istedigimizde burda degisecez heryerde yok
+        return new BCryptPasswordEncoder(); //heslemek algoritmasi , en populer
     }
 }
