@@ -6,6 +6,7 @@ import com.library.libraryAutomation.repository.BorrowRepository;
 import com.library.libraryAutomation.repository.FineRepository;
 import com.library.libraryAutomation.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,11 +20,13 @@ public class UserController {
     private final UserRepository userRepository;
     private final BorrowRepository borrowRepository;
     private final FineRepository fineRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, BorrowRepository borrowRepository, FineRepository fineRepository) {
+    public UserController(UserRepository userRepository, BorrowRepository borrowRepository, FineRepository fineRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.borrowRepository = borrowRepository;
         this.fineRepository = fineRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // 1. Herkesi stastik olarak alma
@@ -56,6 +59,9 @@ public class UserController {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email уже занят!");
         }
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
         return userRepository.save(user);
     }
 

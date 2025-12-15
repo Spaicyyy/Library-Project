@@ -2,13 +2,18 @@ package com.library.libraryAutomation;
 
 import com.library.libraryAutomation.entity.User;
 import com.library.libraryAutomation.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public DataInitializer(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -21,7 +26,7 @@ public class DataInitializer implements CommandLineRunner {
             User admin = new User();
             admin.setFullName("Admin");
             admin.setEmail("admin@library.com");
-            admin.setPassword("admin123"); // yeni sifresi
+            admin.setPassword(passwordEncoder.encode("admin123")); // yeni sifresi , heslenmis
             admin.setRole(User.Role.ADMIN);
 
             userRepository.save(admin);
