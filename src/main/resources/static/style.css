@@ -21,13 +21,13 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1000px; /* Чуть шире, чтобы влезла таблица юзеров */
+    max-width: 1000px; /* Slightly wider to fit the users table */
 }
 
 header { text-align: center; color: white; margin-bottom: 30px; }
 .subtitle { font-weight: 300; opacity: 0.8; font-size: 0.8em; }
 
-/* Карточки */
+/* Cards */
 .card {
     background: rgba(255, 255, 255, 0.95);
     padding: 25px;
@@ -39,7 +39,7 @@ header { text-align: center; color: white; margin-bottom: 30px; }
 
 .login-card { max-width: 400px; margin: 0 auto; text-align: center; }
 
-/* Формы */
+/* Forms */
 input, select {
     padding: 12px;
     margin: 8px 0;
@@ -50,21 +50,21 @@ input, select {
 }
 input:focus, select:focus { border-color: var(--primary); outline: none; }
 
-/* --- ИСПРАВЛЕНИЕ: ФОРМЫ ТЕПЕРЬ ГИБКИЕ (Flexbox) --- */
-/* Чтобы кнопки не слипались и влезало много полей */
+/* --- FIX: FORMS ARE NOW FLEXIBLE (Flexbox) --- */
+/* To prevent buttons from sticking together and fit many fields */
 .add-book-form {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap; /* Если места мало - перенесет на новую строку */
+    flex-wrap: wrap; /* If space is low - wraps to a new line */
     align-items: center;
 }
 .add-book-form input, .add-book-form select {
-    flex: 1; /* Растягиваются равномерно */
-    min-width: 150px; /* Чтобы не сжимались в точку */
-    margin: 0; /* Убираем лишние отступы, управляет gap */
+    flex: 1; /* Stretch evenly */
+    min-width: 150px; /* To prevent shrinking to a dot */
+    margin: 0; /* Remove extra margins, controlled by gap */
 }
 
-/* Кнопки */
+/* Buttons */
 button {
     padding: 12px 20px;
     border: none;
@@ -77,11 +77,11 @@ button:hover { transform: translateY(-2px); }
 
 .btn-primary { background: var(--primary); color: white; width: 100%; }
 .btn-secondary { background: #b2bec3; color: white; }
-.btn-accent { background: var(--accent); color: white; white-space: nowrap; } /* nowrap - текст не ломается */
+.btn-accent { background: var(--accent); color: white; white-space: nowrap; } /* nowrap - text doesn't break */
 .btn-danger { background: var(--danger); color: white; padding: 6px 12px; }
 .btn-take { background: var(--primary); color: white; padding: 6px 15px; font-size: 0.9em; }
 
-/* Кнопки в формах (чтобы не растягивались на всю ширину) */
+/* Buttons in forms (so they don't stretch full width) */
 .add-book-form .btn-primary,
 .add-book-form .btn-accent {
     width: auto;
@@ -90,18 +90,18 @@ button:hover { transform: translateY(-2px); }
 
 button:disabled { background: #dfe6e9; cursor: not-allowed; transform: none; color: #b2bec3; }
 
-/* Таблица */
+/* Table */
 .styled-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
 .styled-table th { text-align: left; color: #636e72; padding: 10px; border-bottom: 2px solid #f1f2f6; }
 .styled-table td { padding: 10px; border-bottom: 1px solid #f1f2f6; }
 .styled-table tr:hover { background-color: #f8f9fa; }
 
-/* Статусы */
+/* Statuses */
 .badge { padding: 5px 10px; border-radius: 15px; font-size: 0.8em; font-weight: bold; }
 .status-ok { background: rgba(85, 239, 196, 0.2); color: #00b894; }
 .status-busy { background: rgba(255, 118, 117, 0.2); color: #d63031; }
 
-/* Списки */
+/* Lists */
 .borrow-list { list-style: none; padding: 0; }
 .borrow-list li {
     background: white; border: 1px solid #f1f2f6;
@@ -109,7 +109,7 @@ button:disabled { background: #dfe6e9; cursor: not-allowed; transform: none; col
     display: flex; justify-content: space-between; align-items: center;
 }
 
-/* Утилиты */
+/* Utilities */
 .hidden { display: none !important; }
 .error-msg { color: var(--danger); font-size: 0.9em; margin-top: 10px; }
 .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; color: white; }
@@ -119,41 +119,41 @@ button:disabled { background: #dfe6e9; cursor: not-allowed; transform: none; col
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ========================================= */
-/* КРАСИВЫЕ КНОПКИ-ССЫЛКИ (FIX)        */
+/* BEAUTIFUL BUTTON LINKS (FIX)              */
 /* ========================================= */
 
-/* 1. Общий фикс для всех ссылок-кнопок */
+/* 1. General fix for all button links */
 a.btn-primary, a.btn-secondary {
-    text-decoration: none !important; /* Убиваем подчеркивание навсегда */
-    display: inline-flex;             /* Чтобы работали отступы */
-    align-items: center;              /* Текст ровно по центру по вертикали */
-    justify-content: center;          /* Текст ровно по центру по горизонтали */
+    text-decoration: none !important; /* Remove underline completely */
+    display: inline-flex;             /* So margins/padding work */
+    align-items: center;              /* Text exactly centered vertically */
+    justify-content: center;          /* Text exactly centered horizontally */
     line-height: 1.2;
     box-sizing: border-box;
 }
 
-/* 2. Кнопка "👥 Управление Людьми" (Стильная, темная, с тенью) */
+/* 2. Button "👥 Manage People" (Stylish, dark, with shadow) */
 a[href="users.html"] {
-    background: #2d3436;              /* Благородный темный цвет */
+    background: #2d3436;              /* Noble dark color */
     color: white;
     font-weight: 600;
-    border-radius: 50px;              /* Полностью круглая, как капсула */
-    padding: 12px 30px !important;    /* Побольше "воздуха" внутри */
-    box-shadow: 0 5px 15px rgba(45, 52, 54, 0.4); /* Мягкая тень снизу */
-    transition: all 0.3s ease;        /* Плавная анимация */
+    border-radius: 50px;              /* Fully round, like a capsule */
+    padding: 12px 30px !important;    /* More "air" inside */
+    box-shadow: 0 5px 15px rgba(45, 52, 54, 0.4); /* Soft shadow at the bottom */
+    transition: all 0.3s ease;        /* Smooth animation */
     border: 2px solid transparent;
 }
 
 a[href="users.html"]:hover {
-    background: #000000;              /* Чернеет при наведении */
-    transform: translateY(-3px);      /* Чуть взлетает вверх */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5); /* Тень становится больше */
+    background: #000000;              /* Turns black on hover */
+    transform: translateY(-3px);      /* Slightly floats up */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5); /* Shadow becomes larger */
 }
 
-/* 3. Кнопка "⬅ Назад" (Стеклянная, полупрозрачная) */
+/* 3. Button "⬅ Back" (Glassy, semi-transparent) */
 a[href="index.html"] {
-    background: rgba(255, 255, 255, 0.15); /* Эффект стекла */
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Тонкая белая рамка */
+    background: rgba(255, 255, 255, 0.15); /* Glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Thin white border */
     color: white;
     padding: 8px 20px;
     border-radius: 8px;
@@ -162,6 +162,6 @@ a[href="index.html"] {
 }
 
 a[href="index.html"]:hover {
-    background: rgba(255, 255, 255, 0.3); /* Светлеет при наведении */
+    background: rgba(255, 255, 255, 0.3); /* Lightens on hover */
     color: white;
 }

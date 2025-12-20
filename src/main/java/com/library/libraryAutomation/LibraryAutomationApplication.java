@@ -11,10 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 //pysu smxj mxia shvb
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@EnableAsync
-@Configuration
-@EnableWebSecurity
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})//Springboot'un normal guvenliyini burakib import etdiyimizi kullaniyor
+@EnableAsync //Email islemleri daha hizli calisiyor
+@Configuration // Bean , Component ... , projede bunlar oldugunu springboota gosteriyor
+@EnableWebSecurity //Web guvenliyini kullanacagini springboota soyluyor
 public class LibraryAutomationApplication {
 
 	public static void main(String[] args) {

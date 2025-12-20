@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter  { //Her zaman sadece bir token yolanisa girecek
 
     private final JwtUtils jwtUtils;
 
@@ -29,20 +29,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // Получаем заголовок Authorization: Bearer <token>
+
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // Отрезаем "Bearer "
+        if (authHeader != null && authHeader.startsWith("Bearer ")) { //Token Yokluyor
+            String token = authHeader.substring(7); //ilk 7 harfi kesiyor , sadece token kaliyor
 
             if (jwtUtils.validateToken(token)) {
                 String email = jwtUtils.getEmailFromToken(token);
 
-                // Создаем "виртуального" пользователя для Spring Security
-                // (В реале тут можно загружать права из базы, но пока упростим)
                 UserDetails userDetails = User.builder()
                         .username(email)
-                        .password("") // Пароль не нужен для проверки токена
+                        .password("")
                         .authorities(Collections.emptyList())
                         .build();
 
@@ -51,11 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Сообщаем системе: "Этот чувак проверен, пропускай"
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        }
+        } //Tokenin zamani gecmemis ve gercek oldugunu soyluyor
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response); //Sonraki token sisteme giriyor
     }
 }

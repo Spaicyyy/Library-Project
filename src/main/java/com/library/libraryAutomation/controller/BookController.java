@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")//Tum portlara giris izin veriyor
 public class BookController {
 
     @Autowired

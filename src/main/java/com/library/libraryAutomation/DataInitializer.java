@@ -7,7 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component //Bunun la , spring main'ni activ edenden sonra automatik bunuda aktif ediyor
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;

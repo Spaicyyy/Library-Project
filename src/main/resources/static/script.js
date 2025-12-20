@@ -2,7 +2,7 @@ const API_URL = 'http://localhost:8081/api';
 let currentUser = null;
 let authToken = null;
 
-// --- ЗАГРУЗКА СТРАНИЦЫ ---
+// --- PAGE LOADING ---
 document.addEventListener("DOMContentLoaded", () => {
     const storedUser = localStorage.getItem('library_user');
     const storedToken = localStorage.getItem('library_token');
@@ -14,22 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// --- УМНАЯ ФУНКЦИЯ ЗАПРОСОВ (С ТОКЕНОМ) ---
+// --- SMART REQUEST FUNCTION (WITH TOKEN) ---
 async function authFetch(url, options = {}) {
     if (!options.headers) options.headers = {};
 
-    // Добавляем токен
+    // Add token
     if (authToken) {
         options.headers['Authorization'] = 'Bearer ' + authToken;
     }
-    // Добавляем тип контента JSON
+    // Add content type JSON
     if (!options.headers['Content-Type']) {
         options.headers['Content-Type'] = 'application/json';
     }
 
     const response = await fetch(url, options);
 
-    // Если токен протух
+    // If token expired
     if (response.status === 401 || response.status === 403) {
         alert("Session expired. Login again.");
         logout();
@@ -38,7 +38,7 @@ async function authFetch(url, options = {}) {
     return response;
 }
 
-// --- 1. ВХОД (LOGIN) ---
+// --- 1. LOGIN ---
 async function handleLogin() {
     const email = document.getElementById('emailInput').value;
     const password = document.getElementById('passwordInput').value;
@@ -64,11 +64,11 @@ async function handleLogin() {
 
     } catch (error) {
         console.error(error);
-        alert("❌ Ошибка входа! Проверь пароль.");
+        alert("❌ Login failed! Check your password.");
     }
 }
 
-// --- ВОССТАНОВЛЕНИЕ ИНТЕРФЕЙСА ---
+// --- RESTORE INTERFACE ---
 function restoreSession() {
     if (document.getElementById('loginSection')) {
         document.getElementById('loginSection').classList.add('hidden');
@@ -87,7 +87,7 @@ function restoreSession() {
 
 function checkAuth() {
     if (!currentUser || currentUser.role !== 'ADMIN') {
-        alert("⛔ Только для Админов!");
+        alert("⛔ Admin access only!");
         window.location.href = 'index.html';
     }
 }
@@ -99,7 +99,7 @@ function logout() {
 }
 
 // ==========================================
-//           ЛОГИКА КНИГ
+//              BOOK LOGIC
 // ==========================================
 
 async function loadBooks() {
@@ -122,7 +122,7 @@ async function loadBooks() {
 
         const isFree = book.available;
 
-        // Формируем кнопку действия (чтобы не путаться в кавычках)
+        // Create action button (to avoid quote confusion)
         let actionBtn = "";
         if (isAdmin) {
             actionBtn = "<button class='btn-danger' onclick='deleteBook(" + book.id + ")'>🗑️</button>";
@@ -157,7 +157,7 @@ async function borrowBook(bookId) {
 }
 
 async function deleteBook(id) {
-    if(confirm("Удалить книгу?")) {
+    if(confirm("Delete this book?")) {
         await authFetch(API_URL + '/books/' + id, { method: 'DELETE' });
         loadBooks();
     }
@@ -169,7 +169,7 @@ async function addNewBook() {
     const isbn = document.getElementById('newBookIsbn').value;
 
     if (!title || !author) {
-        alert("⚠️ Введите название и автора!");
+        alert("⚠️ Please enter title and author!");
         return;
     }
 
@@ -189,7 +189,7 @@ async function addNewBook() {
 }
 
 // ==========================================
-//        ЛОГИКА ПОЛЬЗОВАТЕЛЕЙ
+//              USER LOGIC
 // ==========================================
 
 async function loadMyBorrows() {
@@ -230,7 +230,7 @@ async function loadUsers() {
     users.forEach(user => {
         const debtStyle = user.totalDebt > 0 ? 'color:red;font-weight:bold' : 'color:green';
 
-        // Безопасная кнопка удаления
+        // Safe delete button
         let deleteBtn = '-';
         if (user.role !== 'ADMIN') {
             deleteBtn = "<button class='btn-danger' onclick='deleteUser(" + user.id + ")'>❌</button>";
@@ -270,12 +270,12 @@ async function registerUser() {
 }
 
 async function deleteUser(id) {
-    if(!confirm("Удалить пользователя?")) return;
+    if(!confirm("Delete this user?")) return;
     const response = await authFetch(API_URL + '/users/' + id, { method: 'DELETE' });
     if(response && response.ok) loadUsers();
 }
 
-// Поиск
+// Search
 function filterBooks() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toLowerCase();

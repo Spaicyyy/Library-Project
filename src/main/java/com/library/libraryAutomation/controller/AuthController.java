@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@RestController //Json geri verecegini soyluyor
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final PasswordEncoder passwordEncoder; //Sifre hasing olmasi ucun islenir
+    private final JwtUtils jwtUtils; //Token yaratici
 
     public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.userRepository = userRepository;
@@ -29,18 +29,14 @@ public class AuthController {
         String password = loginData.get("password");
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Проверяем хеш пароля
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Неверный пароль!");
+            throw new RuntimeException("Wrong password!");
         }
 
-        // Если все ок - генерируем токен
-// Добавляем .name(), чтобы превратить ENUM в обычный ТЕКСТ
-        String token = jwtUtils.generateToken(user.getEmail(), user.getRole().name());
+        String token = jwtUtils.generateToken(user.getEmail(), user.getRole().name()); //Sifre dogruysa token girilen user icin token yapilir  , token kullanicinin bilgirleridir
 
-        // Отправляем ответ: сам юзер + токен
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("user", user);

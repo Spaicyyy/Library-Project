@@ -24,13 +24,12 @@ public class SecurityConfig {
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        System.out.println("🔥🔥🔥 SECURITY CONFIG ЗАГРУЖЕН! 🔥🔥🔥");
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Отключаем CSRF
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of("*"));
@@ -39,11 +38,14 @@ public class SecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(auth -> auth
-                        // 👇 Используем AntPathRequestMatcher - это самый надежный способ
+                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/index.html")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/script.js")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/error")).permitAll() // Разрешаем ошибки
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()    // ВРЕМЕННО: Разрешаем всё, чтобы проверить вход
-                )
+
+                        .anyRequest().authenticated()
+                )//Sadece tokenle buralara izin verir
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -52,10 +54,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
+    } //Sifre hashing
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
+    } //Gelecekte giris parametrekerini degismek icin burda
 }
