@@ -38,13 +38,18 @@ public class SecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/index.html")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/script.js")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+// 🔓 ОТКРЫВАЕМ ДОСТУП К ФАЙЛАМ САЙТА
+                                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/index.html")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/users.html")).permitAll() // 👈 ДОБАВИЛИ ЭТО!
+                                .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/script.js")).permitAll()
 
-                        .anyRequest().authenticated()
+                                // 🔓 ЛОГИН ТОЖЕ ОТКРЫТ
+                                .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+
+                                // 🔒 ВСЕ ОСТАЛЬНЫЕ ЗАПРОСЫ (К ДАННЫМ) - ТОЛЬКО С ТОКЕНОМ
+                                .anyRequest().authenticated()
                 )//Sadece tokenle buralara izin verir
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
