@@ -15,7 +15,7 @@ public class Book {
     private String isbn;
     private boolean isAvailable;
 
-    @ManyToMany(fetch = FetchType.EAGER) //Eager author'lari yada book'lari cikardigimizda digerinde hizli automatik cikmasini saglar
+    @ManyToMany(fetch = FetchType.EAGER) //bir kitap cikarirsan , eager onun tum yazarlarini cikarir
     @JoinTable(
             name = "book_authors", //db'de ismi
             joinColumns = @JoinColumn(name = "book_id"), //classin id'si

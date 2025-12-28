@@ -27,4 +27,6 @@ public interface BorrowRepository extends JpaRepository<Borrow, Long> {
 
     @Query("SELECT COUNT(b) FROM Borrow b WHERE b.user.id = :userId AND b.returnDate IS NULL") //JPQL yazilmis , yani Borrow b , kullanilmis
     Long countActiveBorrows(@Param("userId") Long userId);
+
+    Long countByUserIdAndReturnDateIsNull(Long userId);
 }

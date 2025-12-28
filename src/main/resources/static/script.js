@@ -69,11 +69,27 @@ async function handleLogin() {
 }
 
 // --- RESTORE INTERFACE ---
-function restoreSession() {
+async function restoreSession() {
     if (document.getElementById('loginSection')) {
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('dashboardSection').classList.remove('hidden');
-        document.getElementById('welcomeMsg').innerText = 'Hello, ' + currentUser.fullName;
+
+        const response = await authFetch(API_URL + '/users/me/' + currentUser.id);
+        if (response && response.ok) {
+            const stats = await response.json();
+
+            if (currentUser.role === 'STUDENT') {
+            const debtInfo = stats.totalDebt > 0
+                ? `<span style="color: #ff7675; font-weight: bold;"> | ⚠️ Debt: ${stats.totalDebt} USD</span>`
+                : " | ✅ No debts";
+
+            document.getElementById('welcomeMsg').innerHTML = `Hello, ${stats.fullName}${debtInfo}`;
+         }else if (currentUser.role === 'ADMIN'){
+                        const debtInfo = stats.totalDebt > 0
+                            ? `<span style="color: #ff7675; font-weight: bold;"> | ⚠️ Debt: ${stats.totalDebt} USD</span>`
+                            : " | ✅ No debts";
+         }
+        }
 
         if (currentUser.role === 'ADMIN') {
             document.getElementById('adminPanel').classList.remove('hidden');

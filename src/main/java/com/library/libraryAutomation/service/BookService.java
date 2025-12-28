@@ -16,7 +16,7 @@ import java.util.List;
 public class BookService {
 
     @Autowired
-    private BookRepository bookRepository; //BookRepository kullaniryoruz bide new BookRepistory() yazmadan , Autowired yardimiyla
+    private BookRepository bookRepository; //BookRepository kullaniryoruz bide new BookRepistory(...) yazmadan , Autowired yardimiyla
 
     @Autowired
     private BorrowRepository borrowRepository;
@@ -28,8 +28,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    @Transactional
-    public Book addBook(BookRequest request) {
+    @Transactional //Guvenligi saglar , metod calisdiginda ortada hata verse , herseyi geri atacak
+    public Book addBook(BookRequest request) { //Dto dan kitap bilgilerini aliyor
         Book book = new Book();
         book.setTitle(request.getTitle());
         book.setIsbn(request.getIsbn());

@@ -165,3 +165,10 @@ a[href="index.html"]:hover {
     background: rgba(255, 255, 255, 0.3); /* Lightens on hover */
     color: white;
 }
+
+#welcomeMsg b {
+    margin-left: 10px;
+    padding: 2px 8px;
+    background: rgba(255, 118, 117, 0.1);
+    border-radius: 5px;
+}

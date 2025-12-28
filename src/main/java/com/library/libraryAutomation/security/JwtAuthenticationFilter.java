@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter  { //Her zaman sadece bir token yolanisa girecek
+public class JwtAuthenticationFilter extends OncePerRequestFilter  { //Garanti veriyorki bir token sadece bir kere yoklanacak
 
     private final JwtUtils jwtUtils;
 
@@ -30,25 +30,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  { //Her zaman
                                     FilterChain filterChain) throws ServletException, IOException {
 
 
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");//burani ariyourz , cunki token bura geliyor
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) { //Token Yokluyor
             String token = authHeader.substring(7); //ilk 7 harfi kesiyor , sadece token kaliyor
 
             if (jwtUtils.validateToken(token)) {
                 String email = jwtUtils.getEmailFromToken(token);
+                String role = jwtUtils.getRoleFromToken(token);
+
+                // Spring role yerini "ROLE_" seklinde bekliyor
+                var authority = new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role);
 
                 UserDetails userDetails = User.builder()
                         .username(email)
                         .password("")
-                        .authorities(Collections.emptyList())
+                        .authorities(java.util.List.of(authority)) // Rolu'da izin yerine veriyoruz
                         .build();
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } //Tokenin zamani gecmemis ve gercek oldugunu soyluyor

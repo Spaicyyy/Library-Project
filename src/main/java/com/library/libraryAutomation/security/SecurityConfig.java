@@ -29,8 +29,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> {
+                .csrf(AbstractHttpConfigurer::disable) //Siteleri guvenicini sonduruyor , cunki JWT guveni ekledik
+                .cors(cors -> cors.configurationSource(request -> { //her portdan giris izin ver
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of("*"));
                     config.setAllowedMethods(List.of("*"));
@@ -38,14 +38,19 @@ public class SecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/index.html")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/users.html")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/script.js")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
 
-                                .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
-                                .anyRequest().authenticated()
+                        // Ogrenci kendi bilgilerini gore bilir
+                        .requestMatchers(new AntPathRequestMatcher("/api/users/me/**")).authenticated()
+
+                        // Geri kalan her sey Admin tarafindan kullanilir
+                        .requestMatchers(new AntPathRequestMatcher("/api/users/**")).hasRole("ADMIN")
+
+                        // Kitaplar ve figeri her kes icin aciktir
+                        .requestMatchers(new AntPathRequestMatcher("/*.html")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/*.js")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/*.css")).permitAll()
+                        .anyRequest().authenticated()
                 )//Sadece tokenle buralara izin verir
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

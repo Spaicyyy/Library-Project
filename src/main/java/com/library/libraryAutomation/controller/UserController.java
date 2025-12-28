@@ -5,6 +5,7 @@ import com.library.libraryAutomation.entity.User;
 import com.library.libraryAutomation.repository.BorrowRepository;
 import com.library.libraryAutomation.repository.FineRepository;
 import com.library.libraryAutomation.repository.UserRepository;
+import com.library.libraryAutomation.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -17,40 +18,25 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class UserController {
 
+    private final UserService userService;
     private final UserRepository userRepository;
-    private final BorrowRepository borrowRepository;
-    private final FineRepository fineRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, BorrowRepository borrowRepository, FineRepository fineRepository, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
         this.userRepository = userRepository;
-        this.borrowRepository = borrowRepository;
-        this.fineRepository = fineRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // 1. Herkesi stastik olarak alma
     @GetMapping
     public List<UserStats> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserStats> statsList = new ArrayList<>();
+        return userService.getAllUsersStats();
+    }
 
-        for (User user : users) {
-            // Kitap sayisi
-            Long activeBooks = borrowRepository.countActiveBorrows(user.getId());
-            // Ceza sayisi
-            BigDecimal debt = fineRepository.getTotalDebtByUserId(user.getId());
-
-            statsList.add(new UserStats(
-                    user.getId(),
-                    user.getFullName(),
-                    user.getEmail(),
-                    user.getRole().name(),
-                    activeBooks,
-                    debt
-            ));
-        }
-        return statsList;
+    // Ogrenci sadece kendi borcunu goruyor
+    @GetMapping("/me/{id}")
+    public UserStats getMyStats(@PathVariable Long id) {
+        return userService.getStatsById(id);
     }
 
     // 2.Yeni kullanici ekle
@@ -68,10 +54,7 @@ public class UserController {
     // 3. Kullanicini sil (Once cezasina bakiyoruz)
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        Long activeBooks = borrowRepository.countActiveBorrows(id);
-        if (activeBooks > 0) {
-            throw new RuntimeException("Can't delete! This user have not returned books.");
-        }
-        userRepository.deleteById(id);
+        // Просто вызываем сервис
+        userService.deleteUser(id);
     }
 }

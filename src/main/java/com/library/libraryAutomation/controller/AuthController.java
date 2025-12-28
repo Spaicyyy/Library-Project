@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController //Json geri verecegini soyluyor
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth")//Her sey bu adresden baslayacaqini soyluyor
 public class AuthController {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; //Sifre hasing olmasi ucun islenir
+    private final PasswordEncoder passwordEncoder; //Sifre hash sifre ile ayni olub olmadigi ucun kontrol edile bilir
     private final JwtUtils jwtUtils; //Token yaratici
 
     public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
